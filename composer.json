@@ -1,0 +1,31 @@
+{
+    "name": "cmsify/cmsify",
+    "description": "Cms builder for your Laravel application.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Daniels Grietins",
+            "email": "daniels.grietins@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "spatie/laravel-permission": "^3.11",
+        "tymon/jwt-auth": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cmsify\\Cmsify\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Cmsify\\Cmsify\\Providers\\CmsifyServiceProvider"
+            ]
+        }
+    },
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
