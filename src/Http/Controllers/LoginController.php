@@ -69,6 +69,17 @@ class LoginController extends BaseController
     }
 
     /**
+     * @param Request $request
+     * @return array
+     */
+    public function profile(Request $request)
+    {
+        $user = $request->user('cmsify-api');
+
+        return $this->getUserProfile($user);
+    }
+
+    /**
      * @param string $token
      * @param Model $user
      * @return JsonResponse
@@ -79,10 +90,36 @@ class LoginController extends BaseController
             'access_token' => $token,
             'token_type'   => 'bearer',
             'expires_in'   => auth('cmsify-api')->factory()->getTTL() * 60,
-            'user'         => [
-                'id'   => $user->id,
-                'name' => $user->name,
-            ]
+            'user'         => $this->getUserProfile($user)
         ]);
+    }
+
+    /**
+     * @param Model $user
+     * @return array
+     */
+    private function getUserProfile(Model $user): array
+    {
+        return [
+            'id'       => $user->id,
+            'name'     => $user->name,
+            'initials' => $this->getInitials($user),
+        ];
+    }
+
+    /**
+     * @param Model $user
+     * @return string
+     */
+    private function getInitials(Model $user): string
+    {
+        $explodeName = explode(' ', $user->name);
+        $firstLetterOfTheWord = array_map(function (string $word) {
+            return $word[0];
+        }, $explodeName);
+
+        $firstTwoLetters = array_slice($firstLetterOfTheWord, 0, 2);
+
+        return implode($firstTwoLetters);
     }
 }
