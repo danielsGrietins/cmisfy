@@ -20,13 +20,14 @@ class ColumnSet
 
     /**
      * @param string $column
+     * @param string|null $label
      * @return $this
      */
     public function add(string $column, string $label = null): self
     {
         $this->columns->push([
             'key'            => $column,
-            'label'          => $label ?: $column,
+            'label'          => $this->getLabel($column, $label),
             'sortable'       => true,
             'searchable'     => true,
             'html'           => false,
@@ -34,6 +35,20 @@ class ColumnSet
         ]);
 
         return $this;
+    }
+
+    /**
+     * @param string $column
+     * @param string|null $label
+     * @return string
+     */
+    private function getLabel(string $column, string $label = null): string
+    {
+        if(!$label) {
+            return ucfirst(str_replace('_', ' ', str_replace('.', ' ', $column)));
+        }
+
+        return $label;
     }
 
     /**

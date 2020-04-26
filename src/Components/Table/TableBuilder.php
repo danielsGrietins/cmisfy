@@ -44,9 +44,12 @@ class TableBuilder
      */
     private $relations;
 
+    /**
+     * TableBuilder constructor.
+     */
     public function __construct()
     {
-        $this->columnSet = new ColumnSet($this->model);
+        $this->columnSet = new ColumnSet;
     }
 
     /**
@@ -62,7 +65,7 @@ class TableBuilder
         $model = $this->model::query();
 
         if ($this->relations) {
-            $model->load($this->relations);
+            $model->with($this->relations);
         }
 
         if ($search = $request->get('filter')) {
@@ -113,7 +116,7 @@ class TableBuilder
             'columns'    => $this->getColumnConfig(),
             'sort'       => [
                 'column'    => $this->getSortingColumn(),
-                'direction' => $this->sortingDirection === 'asc' ? false : true,
+                'direction' => $this->sortingDirection !== 'asc',
             ]
         ]);
     }
